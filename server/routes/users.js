@@ -85,12 +85,35 @@ userRouter.post('/signin', (req, res) => {
 });
 */
 
-// url : /userRouter/123
-// req.params="id" & req.query=123 
+// url : /userRouter/(id) + json-"password":"(pw)"/변경정보 
+// req.params="id" & req.params.id=123 
+// 회원 수정 - 로그인된 경우만 진입할 수 있게 
+// json 전달 : pw, new_pw 등(id 제외 모두 - id는 주소로 전달)
 userRouter.post('/:id',function(req, res, next){
-  res.writeHead(200, {'Content-Type' : 'text/html; charset=utf-8'});
-  res.write("id = "+req.params.id);
-  res.end();
+  Users.findOne({ id: req.params.id, password: req.body.password },
+    (err,user) => {
+      if (err) {
+        res.send('server error');
+      }
+      else if (user) {
+        user.password = req.body.new_password;
+        user.name = req.body.name;
+        user.email = req.body.email;
+        const result = {
+            code: 200,
+            msg: '회원정보 수정 성공',
+            user: user
+        };
+        res.send(result);
+      }
+      else{
+          const f_result = {
+              code: 400,
+              msg: '회원정보 수정 실패'
+          };
+          res.send(f_result);
+      }
+  });
 });
 
 module.exports = userRouter;
