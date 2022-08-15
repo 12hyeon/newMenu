@@ -51,11 +51,11 @@ userRouter.post("/login", function(req, res){
 // 회원 가입 - 추가 : pw 암호화 전달 & user 스키마 조건
 //const pbkdf2Password = require("pbkdf2-password");
 //var hasher = pbkdf2Password();
-userRouter.post('/join', async function(req,res){
+userRouter.post('/signup', async function(req,res){
   var new_user = new Users(req.body);
 
-  if (new_user.id.length < 8) {
-    return res.json({ message: '회원가입 실패 - id길이가 8미만' });
+  if (new_user.id.length < 4) {
+    return res.json({ message: '회원가입 실패 - id길이가 4미만' });
   }
 
 	new_user.save((err) => {
