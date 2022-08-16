@@ -12,18 +12,25 @@ const Users = require('../models/user');
 userRouter.use(bodyParser.urlencoded({ extended: true }));
 userRouter.use(bodyParser.json());
 
+/*
 userRouter.get('/', function(req, res, next) {
   res.write("users 페이지 잔입");
 });
+*/
 
 // 로그인
 userRouter.post("/login", function(req, res){
   Users.findOne({ id: req.body.id, password: req.body.password },
     (err,user) => {
+      
+      // test
+      console.log("id = "+req.body.id);
+      console.log("pw = "+req.body.pw);
+      
       if (err){
         const err_result = {
             code: 500,
-            msg: 'server error'
+            msg: '서버 오류'
         };
         res.send(err_result);
       }
@@ -48,19 +55,20 @@ userRouter.post("/login", function(req, res){
 });
 
 
-// 회원 가입 - 추가 : pw 암호화 전달 & user 스키마 조건
+// 회원 가입 - 추가 : pw 암호화 전달
 //const pbkdf2Password = require("pbkdf2-password");
 //var hasher = pbkdf2Password();
 userRouter.post('/signup', async function(req,res){
   var new_user = new Users(req.body);
-
+  /*
   if (new_user.id.length < 4) {
     return res.json({ message: '회원가입 실패 - id길이가 4미만' });
   }
-
+  */
 	new_user.save((err) => {
-		if (err) return res.status(500).json({ message: '회원가입 실패' });
-		else return res.status(200).json({ message: '회원가입 성공', data: new_user });
+		if (err) return res.status(500).json({ msg: '회원가입 실패' });
+		else return res.status(200).json({ msg: '회원가입 성공'});
+    // json - data: new_user 추가
 	});
 });
 
@@ -73,19 +81,7 @@ userRouter.post('/signin', (req, res) => {
 	});
 });
 
-/* 동기 방식
-userRouter.post('/signin', (req, res) => {
-	let result = await Users.findOne({ id: req.body.id});
-  if (!result) {
-    return res.status(500).json({ message: '에러!' });
-  }
-  else {
-    return res.status(200).json({ message: '사용중인 id', data: user });
-  }
-});
-*/
-
-// url : /userRouter/(id) + json-"password":"(pw)"/변경정보 
+// url : /userRouter/(id) + json-{"password":"(pw)",변경정보} 
 // req.params="id" & req.params.id=123 
 // 회원 수정 - 로그인된 경우만 진입할 수 있게 
 // json 전달 : pw, new_pw 등(id 제외 모두 - id는 주소로 전달)

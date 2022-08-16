@@ -36,7 +36,8 @@ const userSchema = mongoose.Schema(
       type: Number,
     },
     allergy: {
-      type: String,
+      type: String, // 당뇨병 or 없음
+      // 알레르기 추가시, [String] 타입
     },
   },
   { versionKey: false }); // __v 제거

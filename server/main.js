@@ -10,10 +10,6 @@ const app = express()
 var db = require('./db');
 var usersRouter = require('./routes/users');
 app.use('/users', usersRouter);
-var foodsRouter = require('./routes/foods');
-app.use('/foods', foodsRouter);
-var dietsRouter = require('./routes/diets');
-app.use('/diets', dietsRouter);
 
 // test
 app.get('/', (req, res) => {

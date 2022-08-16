@@ -33,4 +33,4 @@ const foodSchema = mongoose.Schema(
   },
   { versionKey: false }); // __v 제거
 
-module.exports = mongoose.model('Users', userSchema);
+module.exports = mongoose.model('Foods', userSchema);
