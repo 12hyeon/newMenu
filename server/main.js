@@ -7,16 +7,18 @@ const mongoose = require("mongoose");
 const app = express()
 
 // middleware
+var db = require('./db');
 var usersRouter = require('./routes/users');
 app.use('/users', usersRouter);
-var db = require('./db');
-
+var foodsRouter = require('./routes/foods');
+app.use('/foods', foodsRouter);
+var dietsRouter = require('./routes/diets');
+app.use('/diets', dietsRouter);
 
 // test
 app.get('/', (req, res) => {
   res.send('<h1>newMenu</h1>');
 });
-
 
 app.listen(port, (err) => {
   if (err) return console.log(err);

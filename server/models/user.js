@@ -4,12 +4,11 @@ const userSchema = mongoose.Schema(
   {
     name: { 
       type: String,
-      maxLength: 50,
+      maxLength: 20,
       required: true,
     },
     id: {
       type: String,
-      //minLength: 4,
       maxLength: 20,
       unique: 1,
       required: true,
@@ -17,8 +16,14 @@ const userSchema = mongoose.Schema(
     password: {
       type: String,
       //minLength: 8,
-      maxLength: 50,
+      maxLength: 20,
       required: true,
+    },
+    sex: {
+      type:Number, // 남자:1 / 여자:2
+    },
+    age: {
+      type:Number,
     },
     email: {
       type: String,
