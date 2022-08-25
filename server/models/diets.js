@@ -1,13 +1,13 @@
 const mongoose = require('mongoose');
 
-const calendarSchema = mongoose.Schema(
+const dietSchema = mongoose.Schema(
   {
-    id: { 
+    userId: { 
       type: String,
       required: true,
     },
     date: {
-      type: Date,
+      type: String, // Date
       required: true,
     },
     break_diet: {
@@ -22,4 +22,4 @@ const calendarSchema = mongoose.Schema(
   },
   { versionKey: false }); // __v 제거
 
-module.exports = mongoose.model('Calendar', calendarSchema);
+module.exports = mongoose.model('Diets', dietSchema);

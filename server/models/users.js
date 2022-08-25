@@ -7,27 +7,27 @@ const userSchema = mongoose.Schema(
       maxLength: 20,
       required: true,
     },
-    id: {
+    userId: {
       type: String,
       maxLength: 20,
       unique: 1,
       required: true,
     },
-    password: {
+    userPassword: {
       type: String,
       //minLength: 8,
       maxLength: 20,
       required: true,
+    },
+    email: {
+      type: String,
+      //required: true,
     },
     sex: {
       type:Number, // 남자:1 / 여자:2
     },
     age: {
       type:Number,
-    },
-    email: {
-      type: String,
-      //required: true,
     },
     height: {
       type: Number,
@@ -36,9 +36,12 @@ const userSchema = mongoose.Schema(
       type: Number,
     },
     allergy: {
-      type: String, // 당뇨병 or 없음
-      // 알레르기 추가시, [String] 타입
+      type: [String],
     },
+    // 기초대사량
+    basal: {
+      type: Number,
+    }
   },
   { versionKey: false }); // __v 제거
 

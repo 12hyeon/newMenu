@@ -2,17 +2,11 @@ const mongoose = require('mongoose');
 
 const foodSchema = mongoose.Schema(
   {
-    no: {
-        type: Number,
-    },
-    fd_Code: { 
+    fd_Code: { // 소분류별 code
         type: String,
         required: true,
     },
-    upper_Fd_Grupp_Nm: {
-       type: String,
-    },
-    fd_Nm: {
+    fd_Nm: { // 소분류
         type: String,
     },
     fd_Wgh: {
@@ -24,13 +18,7 @@ const foodSchema = mongoose.Schema(
     allrgy_Info: {
         type: [String],
     },
-    food_List_Name: {
-        type: String,
-    },
-    food_List_Code: {
-        type: [String],
-    },
   },
   { versionKey: false }); // __v 제거
 
-module.exports = mongoose.model('Foods', userSchema);
+module.exports = mongoose.model('Foods', foodSchema);
