@@ -18,6 +18,9 @@ const foodSchema = mongoose.Schema(
     allrgy_Info: {
         type: [String],
     },
+    tag: {
+        type : [String],
+    }
   },
   { versionKey: false }); // __v 제거
 

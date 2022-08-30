@@ -41,7 +41,7 @@ const userSchema = mongoose.Schema(
     // 기초대사량
     basal: {
       type: Number,
-    }
+    },
   },
   { versionKey: false }); // __v 제거
 
