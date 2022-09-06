@@ -36,7 +36,7 @@ const userSchema = mongoose.Schema(
       type: Number,
     },
     allergy: {
-      type: [String],
+      type: [Number],
     },
     // 기초대사량
     basal: {

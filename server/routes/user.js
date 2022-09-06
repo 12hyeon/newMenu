@@ -43,9 +43,8 @@ userRouter.post("/login", async function(req, res) {
         res.status(400).json({
           msg: '로그인 실패'
       });
-      // 실패 이유가 id, pw 중 어떤 문제인지 출력 필요?
-      // if) 해당 id 존재 여부 확인 -> 비밀번호 확인 
       }
+      // + 실패 이유
   });
 });
 
@@ -57,10 +56,8 @@ userRouter.post("/login", async function(req, res) {
 userRouter.post('/signup', async function(req,res){
   var new_user = new Users(req.body);
   console.log(new_user);
-  // 여기서 id, pw, email 등 조건 확인 후 해당 문자를 반환하는 과정 필요?
-  /*if (new_user.id.length < 4) {
-    return res.json({ msg: '회원가입 실패 - id길이가 4미만' });
-  }*/
+
+  // + 회원가입 조건 확인
   
 	new_user.save((err) => {
 		if (err) return res.json({ code:500, msg: '회원가입 실패' });
@@ -156,6 +153,8 @@ userRouter.post('/survey', async function(req,res){
   });
 });
 */
+
+
 
 // url : members/(id) + json-{"password":"(pw)",변경정보} 
 // req.params="id" & req.params.id=123 

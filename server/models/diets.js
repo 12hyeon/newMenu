@@ -11,13 +11,29 @@ const dietSchema = mongoose.Schema(
       required: true,
     },
     break_diet: {
-        type: [String],
+      type: [String],
     },
     lunch_diet: {
-        type: [String],
+      type: [String],
     },
     dinner_diet: {
-        type: [String],
+      type: [String],
+    },
+    break_energy : {
+      type : Number,
+      default: 0,
+    },
+    lunch_energy : {
+      type : Number,
+      default: 0,
+    },
+    dinner_energy : {
+      type : Number,
+      default: 0,
+    },
+    total_energy : {
+      type : Number,
+      default: 0,
     },
   },
   { versionKey: false }); // __v 제거

@@ -16,6 +16,9 @@ const foodCtgSchema = mongoose.Schema(
     fd_Nm: { // 소분류
         type: String,
     },
+    fd_Nm2: { // 소분류 () 제외
+      type: String,
+  },
   },
   { versionKey: false }); // __v 제거
 
