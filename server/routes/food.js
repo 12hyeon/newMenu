@@ -10,8 +10,8 @@ const Users = require('../models/users');
 const Foods = require('../models/foods');
 const Diets = require('../models/diets');
 const FoodCtg = require('../models/food_ctg');
+
 const {PythonShell} = require("python-shell");
-const { calculateObjectSize } = require('bson');
 
 // const { Op } = require("sequelize");
 
@@ -21,7 +21,7 @@ foodRouter.use(bodyParser.json());
 // 대분류 선택 : 존재시, lr_ctg로 넘김
 foodRouter.get('/search', function(req, res) {
   var sm_list = [];
-  Foods.find({ upper_Fd_Grupp_Nm:new RegExp(req.body.lr_ctg), fd_Nm:new RegExp(req.body.word), fd_Nm2:new RegExp(req.body.word)},
+  Foods.find({ upper_Fd_Grupp_Nm:new RegExp(req.body.lr_ctg), fd_Grupp_Nm_list:new RegExp(req.body.md_ctg), fd_Nm2:new RegExp(req.body.word)},
     (err,ctg) => {
         if (err) {
             res.json({code: 500,msg: '서버 오류'});
@@ -87,6 +87,15 @@ foodRouter.get('/recom', async function(req, res) {
         
       })
      });
+  });
+});
+
+// 식단 영양 정보
+foodRouter.get('/info', async function(req, res) {
+  Foods.findOne({word : req.body.word},  (err, food) => {
+    if (food) {
+      res.json({'fd_Nm':food.fd_Nm, 'allrgy_Info':food.allrgy_Info,'energy_Qy':food.energy_Qy,'prot_Qy':food.prot_Qy,'ntrfs_Qy':food.ntrfs_Qy,'carbohydrate_Qy':food.carbohydrate_Qy,'sugar_Qy':food.sugar_Qy,'fafref_Qy':food.fafref_Qy,'fasatf_Qy':food.fasatf_Qy,'clci_Qy':food.clci_Qy,'na_Qy':food.na_Qy,'chole_Qy':food.chole_Qy});
+    }
   });
 });
 
