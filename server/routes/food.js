@@ -75,6 +75,7 @@ foodRouter.get('/recom', async function(req, res) {
     PythonShell.run('test.py', options, function (err, codes) {
       if (err) console.log(err);
       console.log("codes = "+codes);
+      
       var result = [];
       codes.forEach(function (element, index, array) {
         Foods.findOne({fd_Code:element},(err, x) => {

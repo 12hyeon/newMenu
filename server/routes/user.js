@@ -7,6 +7,8 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const userRouter = express.Router();
 const Users = require('../models/users');
+const Foods = require('../models/foods');
+const {PythonShell} = require("python-shell");
 
 userRouter.use(bodyParser.urlencoded({ extended: true }));
 userRouter.use(bodyParser.json());
@@ -16,6 +18,9 @@ userRouter.get('/', function(req, res, next) {
   res.write("users 페이지 잔입");
 });
 */
+
+
+var name = ['userId', 'sex', 'age', 'height', 'weight', 'allergy', 'basal']
 
 // 로그인
 userRouter.post("/login", async function(req, res) {
@@ -29,13 +34,37 @@ userRouter.post("/login", async function(req, res) {
         });
       }
       else if (user) {
-        console.log('로그인 성공!\n');
-        res.status(200).json({
-          code: 200,
-          msg: '로그인 성공',
-          userId : user.userId,
-          allergy : user.allergy,
-          data : user // test
+        console.log('로그인 시작');
+        Users.findOne({userId : req.body.userId},  (err, usr) => {
+          
+          var options = {
+            mode: "text",
+            scriptPath:'./routes',
+            pythonOptions: ["-u"],
+            encoding: 'utf-8',
+            args: [usr.userId, usr.sex, usr.age, usr.height, usr.weight, usr.allergy, usr.basal, name]
+          }
+          PythonShell.run('test.py', options, function (err, codes) {
+            if (err) console.log(err);
+            console.log("codes = "+codes);
+            
+            var result = [];
+            codes.forEach(function (element, index, array) {
+              Foods.findOne({fd_Code:element},(err, x) => {
+                result.push({'lr_ctg':x.upper_Fd_Grupp_Nm, 'md_ctg':x.fd_Grupp_Nm_list, 'sm_ctg':x.fd_Nm});
+                console.log(x.fd_Nm);
+                if (array.length == result.length) {
+                  res.status(200).json({
+                    code: 200,
+                    msg:'로그인 성공',
+                    data:result
+                  });
+                  console.log("로그인 성공");
+                }
+              });
+              
+            })
+           });
         });
       }
       else{
@@ -64,9 +93,6 @@ userRouter.post('/signup', async function(req,res){
 		else return res.json({ code:200, msg: '회원가입 성공', userId : new_user.id});
     console.log("회원가입 성공");
 	});
-  console.log("new_user = "+ new_user);
-  console.log("new id = "+new_user.userId);
-  console.log("new pw = "+new_user.userPassword);
   console.log("new name = "+new_user.name);
 });
 

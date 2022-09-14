@@ -35,7 +35,22 @@ dietRouter.post('/', async function(req, res) {
   // console.log("new Date() = " + d);
 
   var new_diet = new Diets(req.body); // param 확인 필요
-  new_diet.total_energy = new_diet.break_energy + new_diet.lunch_energy + new_diet.dinner_energy;
+  
+  var result = [0,0,0];
+  var name = new_diet.break_diet + new_diet.lunch_diet + new_diet.dinner_diet;
+  var i = new_diet.break_diet.length + new_diet.lunch_diet.length + new_diet.dinner_diet.length;
+  console.log("cnt : "+i);
+  console.log("list :"+name);
+  /*
+  new_diet.break_diet.forEach(function (element, index, array) {
+    Foods.findOne({fd_Nm:element},(err, x) => {
+      result += x.energy;
+      console.log(x.fd_Nm);
+      if (array.length == result.length) {
+        res.json({msg:200, data:result});
+      }
+    });*/
+    new_diet.total_energy = new_diet.break_energy + new_diet.lunch_energy + new_diet.dinner_energy;
   console.log(new_diet);
   
   new_diet.save((err) => {
