@@ -20,7 +20,8 @@ dietRouter.get('/', function(req, res) {
       }
       else if (diet) {
           res.json({code: 200, msg: '식단 정보 전달',
-          data: {break_diet: diet.break_diet, lunch_diet:diet.lunch_diet, dinner_diet: diet.dinner_diet, total_energy:total_energy}});
+          data: {break_diet: diet.break_diet,
+             lunch_diet:diet.lunch_diet, dinner_diet: diet.dinner_diet, total_energy:diet.total_energy}});
       }
       else{
           res.json({code: 400, msg: '식단 데이터 없음'});
@@ -34,32 +35,43 @@ dietRouter.post('/', async function(req, res) {
   // var d = new Date(); // 오늘
   // console.log("new Date() = " + d);
 
-  var new_diet = new Diets(req.body); // param 확인 필요
-  
-  var result = [0,0,0];
-  var name = new_diet.break_diet + new_diet.lunch_diet + new_diet.dinner_diet;
-  var i = new_diet.break_diet.length + new_diet.lunch_diet.length + new_diet.dinner_diet.length;
-  console.log("cnt : "+i);
-  console.log("list :"+name);
-  /*
-  new_diet.break_diet.forEach(function (element, index, array) {
-    Foods.findOne({fd_Nm:element},(err, x) => {
-      result += x.energy;
-      console.log(x.fd_Nm);
-      if (array.length == result.length) {
-        res.json({msg:200, data:result});
+  Diets.findOne({ userId: req.body.userId, date: req.body.date },
+    (err,diet) => {
+      var n = new Diets(req.body);
+
+      if (err) {
+        res.send('수정 서버 오류');
       }
-    });*/
-    new_diet.total_energy = new_diet.break_energy + new_diet.lunch_energy + new_diet.dinner_energy;
-  console.log(new_diet);
+      else if (diet) { // 수정되는지, save 해야하는지
+        if (n.break_diet != []) {
+          diet.break_diet = req.body.break_diet;
+          diet.break_energy = req.body.break_energy;
+        }
+        if (n.lunch_diet != []) {
+          diet.lunch_diet = req.body.lunch_diet;
+          diet.lunch_energy = req.body.lunch_energy;
+        }
+        if (n.dinner_diet != []) {
+          diet.dinner_diet = req.body.dinner_diet;
+          diet.dinner_energy = req.body.dinner_energy;
+        }
+        n.total_energy = n.break_energy + n.lunch_energy + n.dinner_energy;
+        res.json({ code:200, msg: '식단 수정 성공', data: n});
+        console.log(n);
+      }
+      else{
+        n.total_energy = n.break_energy + n.lunch_energy + n.dinner_energy;
+        console.log(n);
   
-  new_diet.save((err) => {
-    if (err) {
-      res.json({ code:500, msg: '식단 저장 실패' });
-    }
-    else {
-      res.json({ code:200, msg: '식단 저장 성공', data: new_diet});
-    }
+        n.save((err) => {
+          if (err) {
+            res.json({ code:500, msg: '식단 저장 실패' });
+          }
+          else {
+            res.json({ code:200, msg: '식단 저장 성공', data: n});
+          }
+        });
+      }
   });
 });
 

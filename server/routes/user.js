@@ -53,14 +53,52 @@ userRouter.post("/login", async function(req, res) {
               Foods.findOne({fd_Code:element},(err, x) => {
                 result.push({'lr_ctg':x.upper_Fd_Grupp_Nm, 'md_ctg':x.fd_Grupp_Nm_list, 'sm_ctg':x.fd_Nm});
                 console.log(x.fd_Nm);
-                if (array.length == result.length) {
+                if (result.length == 4) {
+                  //console.log(result[0].lr_ctg);
                   res.status(200).json({
                     code: 200,
                     msg:'로그인 성공',
-                    data:result
+                    Rfd1:result[0].lr_ctg,
+                    Rfd2:result[1].lr_ctg,
+                    Rfd3:result[2].lr_ctg,
+                    Rfd4:result[3].lr_ctg,
+                    fd1:result[0].sm_ctg,
+                    fd2:result[1].sm_ctg,
+                    fd3:result[2].sm_ctg,
+                    fd4:result[3].sm_ctg
                   });
-                  console.log("로그인 성공");
+                } /*
+                else if (result.length == 3) {
+                  res.status(200).json({
+                    code: 200,
+                    msg:'로그인 성공',
+                    Rfd1:result[0].lr_ctg,
+                    Rfd2:result[1].lr_ctg,
+                    Rfd3:result[2].lr_ctg,
+                    fd1:result[0].sm_ctg,
+                    fd2:result[1].sm_ctg,
+                    fd3:result[2].sm_ctg
+                  });
                 }
+                else if (result.length == 2) {
+                  res.status(200).json({
+                    code: 200,
+                    msg:'로그인 성공',
+                    Rfd1:result[0].lr_ctg,
+                    Rfd2:result[1].lr_ctg,
+                    fd1:result[0].sm_ctg,
+                    fd2:result[1].sm_ctg
+                  });
+                }
+                else if (result.length == 1) {
+                  res.status(200).json({
+                    code: 200,
+                    msg:'로그인 성공',
+                    Rfd1:result[0].lr_ctg,
+                    fd1:result[0].sm_ctg
+                  });
+                }
+*/
               });
               
             })
@@ -96,7 +134,7 @@ userRouter.post('/signup', async function(req,res){
   console.log("new name = "+new_user.name);
 });
 
-const { Op } = require("sequelize");
+//const { Op } = require("sequelize");
 // 중복 id 확인
 userRouter.post('/signin', (req, res) => {
   console.log("중복 확인 Id = "+req.body.userId);

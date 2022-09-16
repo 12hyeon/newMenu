@@ -38,7 +38,7 @@ foodRouter.get('/search', function(req, res) {
   );
 });
 
-
+/*
 // 식단 추천 후 -> word : 소분류명
 foodRouter.get('/info', function(req, res) {
   console.log(req.body.word);
@@ -57,7 +57,7 @@ foodRouter.get('/info', function(req, res) {
       }
   );
 });
-
+*/
 
 var name = ['userId', 'sex', 'age', 'height', 'weight', 'allergy', 'basal']
 
@@ -75,18 +75,21 @@ foodRouter.get('/recom', async function(req, res) {
     PythonShell.run('test.py', options, function (err, codes) {
       if (err) console.log(err);
       console.log("codes = "+codes);
-      
       var result = [];
-      codes.forEach(function (element, index, array) {
-        Foods.findOne({fd_Code:element},(err, x) => {
-          result.push({'lr_ctg':x.upper_Fd_Grupp_Nm, 'md_ctg':x.fd_Grupp_Nm_list, 'sm_ctg':x.fd_Nm});
-          console.log(x.fd_Nm);
-          if (array.length == result.length) {
-            res.json({msg:200, data:result});
-          }
+      if (codes == null) {
+        res.json({msg:400, msg:"식단 추천 실패"});
+      }
+      else {
+        codes.forEach(function (element, index, array) {
+          Foods.findOne({fd_Code:element},(err, x) => {
+            result.push({'lr_ctg':x.upper_Fd_Grupp_Nm, 'md_ctg':x.fd_Grupp_Nm_list, 'sm_ctg':x.fd_Nm});
+            console.log(x.fd_Nm);
+            if (array.length == result.length) {
+              res.json({msg:200, msg:"식단 추천 성공", data:result});
+            }
+          });
         });
-        
-      })
+      }
      });
   });
 });
